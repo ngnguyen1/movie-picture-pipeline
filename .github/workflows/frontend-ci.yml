@@ -18,4 +18,4 @@ jobs:
       with:
         node-version: 18
     - name: Print a message
-      run: "Hello, Frontend CI"
+      run: echo "Hello, Frontend CI"
