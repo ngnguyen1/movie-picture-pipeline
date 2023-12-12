@@ -1,21 +1,39 @@
 name: Frontend CI
 
 on:
-  push:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - closed
     branches:
       - main
+    paths:
+      - "starter/frontend/**"
+  push:
+    branches:
       - development
 
 jobs:
   build:
+    name: Build frontend
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./starter/frontend
 
     steps:
     - name: Check out repository
       uses: actions/checkout@v3
+
     - name: Use Node.js 18
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: 18
-    - name: Print a message
-      run: echo "Hello, Frontend CI"
+
+    - run: npm ci
+
+    - run: npm run lint -- --fix
+    
+    - run: |
+        echo "Hello ${{github.actor}}. You pushed to ${{github.repository}} at $(date)."
