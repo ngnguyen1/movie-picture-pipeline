@@ -2,8 +2,8 @@
 
 | CI |
 | --- |
-[![Backend CI](https://github.com/ngnguyen1/movie-picture-pipeline/actions/workflows/backend-ci.yml/badge.svg?branch=development)](https://github.com/ngnguyen1/movie-picture-pipeline/actions/workflows/backend-ci.yml)  |
-[![Frontend CI](https://github.com/ngnguyen1/movie-picture-pipeline/actions/workflows/frontend-ci.yml/badge.svg?branch=development)](https://github.com/ngnguyen1/movie-picture-pipeline/actions/workflows/frontend-ci.yml) |
+[![Backend CI](https://github.com/ngnguyen1/movie-picture-pipeline/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/ngnguyen1/movie-picture-pipeline/actions/workflows/backend-ci.yml)  |
+[![Frontend CI](https://github.com/ngnguyen1/movie-picture-pipeline/actions/workflows/frontend-ci.yml/badge.svg)](https://github.com/ngnguyen1/movie-picture-pipeline/actions/workflows/frontend-ci.yml) |
 
 You've been brought on as the DevOps resource for a development team that manages a web application that is a catalog of Movie Picture movies. They're in dire need of automating their development workflows in hopes of accelerating their release cycle. They'd like to use Github Actions to automate testing, building and deploying their applications to an existing Kubernetes cluster.
 
