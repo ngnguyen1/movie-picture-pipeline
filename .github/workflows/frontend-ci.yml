@@ -33,7 +33,7 @@ jobs:
 
     - run: npm ci
 
+    - run: npm test
+
     - run: npm run lint -- --fix
     
-    - run: |
-        echo "Hello ${{github.actor}}. You pushed to ${{github.repository}} at $(date)."
