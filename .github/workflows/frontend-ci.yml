@@ -10,9 +10,7 @@ on:
       - main
     paths:
       - "starter/frontend/**"
-  push:
-    branches:
-      - development
+
 env:
   NODE_VERSION: 18.x
 
