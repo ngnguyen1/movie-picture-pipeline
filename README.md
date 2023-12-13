@@ -19,102 +19,111 @@ You'll find 2 folders, one named `frontend` and one named `backend`, where each 
 ### Frontend
 
 1. A Continuous Integration workflow that:
-   1. Runs on `pull_requests` against the `main` branch,only when code in the frontend application changes.
-   2. Is able to be run on-demand (i.e. manually without needing to push code)
-   3. Runs the following jobs in parallel:
-      1. Runs a linting job that fails if the code doesn't adhere to eslint rules
-      2. Runs a test job that fails if the test suite doesn't pass
-   4. Runs a build job only if the lint and test jobs pass and successfully builds the application
+   - [x] Runs on `pull_requests` against the `main` branch,only when code in the frontend application changes.
+   - [x] Is able to be run on-demand (i.e. manually without needing to push code)
+   - [x] Runs the following jobs in parallel:
+      - [x] Runs a linting job that fails if the code doesn't adhere to eslint rules
+      - [x] Runs a test job that fails if the test suite doesn't pass
+   - [x] Runs a build job only if the lint and test jobs pass and successfully builds the application
 2. A Continuous Deployment workflow that:
-   1. Runs on `push` against the `main` branch, only when code in the frontend application changes.
-   2. Is able to be run on-demand (i.e. manually without needing to push code)
-   3. Runs the same lint/test jobs as the Continuous Integration workflow
-   4. Runs a build job only when the lint and test jobs pass
-      1. The built docker image should be tagged with the git sha
-   5. Runs a deploy job that applies the Kubernetes manifests to the provided cluster.
-      1. The manifest should deploy the newly created tagged image
-      2. The tag applied to the image should be the git SHA of the commit that triggered the build
+   - [ ] Runs on `push` against the `main` branch, only when code in the frontend application changes.
+   - [ ] Is able to be run on-demand (i.e. manually without needing to push code)
+   - [ ] Runs the same lint/test jobs as the Continuous Integration workflow
+   - [ ] Runs a build job only when the lint and test jobs pass
+      - [ ] The built docker image should be tagged with the git sha
+   - [ ] Runs a deploy job that applies the Kubernetes manifests to the provided cluster.
+      - [ ] The manifest should deploy the newly created tagged image
+      - [ ] The tag applied to the image should be the git SHA of the commit that triggered the build
 
 ### Backend
 
 1. A Continuous Integration workflow that:
-   1. Runs on `pull_requests` against the `main` branch,only when code in the frontend application changes.
-   2. Is able to be run on-demand (i.e. manually without needing to push code)
-   3. Runs the following jobs in parallel:
-      1. Runs a linting job that fails if the code doesn't adhere to eslint rules
-      2. Runs a test job that fails if the test suite doesn't pass
-   4. Runs a build job only if the lint and test jobs pass and successfully builds the application
+   - [x] Runs on `pull_requests` against the `main` branch,only when code in the frontend application changes.
+   - [x] Is able to be run on-demand (i.e. manually without needing to push code)
+   - [x] Runs the following jobs in parallel:
+      - [x] Runs a linting job that fails if the code doesn't adhere to eslint rules
+      - [x] Runs a test job that fails if the test suite doesn't pass
+   - [x] Runs a build job only if the lint and test jobs pass and successfully builds the application
 2. A Continuous Deployment workflow that:
-   1. Runs on `push` against the `main` branch, only when code in the frontend application changes.
-   2. Is able to be run on-demand (i.e. manually without needing to push code)
-   3. Runs the same lint/test jobs as the Continuous Integration workflow
-   4. Runs a build job only when the lint and test jobs pass
-      1. The built docker image should be tagged with the git sha
-   5. Runs a deploy job that applies the Kubernetes manifests to the provided cluster.
-      1. The manifest should deploy the newly created tagged image
-      2. The tag applied to the image should be the git SHA of the commit that triggered the build
-
+   - [ ] Runs on `push` against the `main` branch, only when code in the frontend application changes.
+   - [ ] Is able to be run on-demand (i.e. manually without needing to push code)
+   - [ ] Runs the same lint/test jobs as the Continuous Integration workflow
+   - [ ] Runs a build job only when the lint and test jobs pass
+      - [ ] The built docker image should be tagged with the git sha
+   - [ ] Runs a deploy job that applies the Kubernetes manifests to the provided cluster.
+      - [ ] The manifest should deploy the newly created tagged image
+      - [ ] The tag applied to the image should be the git SHA of the commit that triggered the build
 
 **⚠️ NOTE**
-Once you begin work on Continuous Deployment, you'll need to first setup the AWS and Kubernetes environment. Follow [these instructions ](#setting-up-continuous-deployment-environment) only when you're ready to start testing your deployments.
+Once you begin work on Continuous Deployment, you'll need to first setup the AWS and Kubernetes environment. Follow [these instructions](#setting-up-continuous-deployment-environment) only when you're ready to start testing your deployments.
 
 ## One-time setup instructions
 
 The project assumes you'll be working in the Udacity workspace where all the necessary system dependencies are installed and setup, ready for use.
 The following steps are required to be run only once to initialize and create your repository with all the files that you'll use for the project.
+
 ### Login
+
 Launch the Udacity workspace and open the terminal in VSCode to start executing the following commands:
+
 1. Start the login process with `gh`
-```bash
-gh auth login
-```
-   2. Select `Github.com`
-   3. Select `HTTPS`
-   4. Enter `Y` or just press **Enter** to authenticate with Github credentials
-   5. Select **Login with a web browser**
-   6. Highlight and copy the one-time code then press **Enter** to open the browser
-   7. If VSCode pops-up with a warning, click **Open**
-   8. Enter your Github credentials at the login page
-      1. You may need to perform your 2FA step next
-   9. Paste in the one-time code that was given on the CLI prompt and click **Continue**
-      1. If you're prompted for authorizing access to any organizations, you don't have to do that. The `gh` cli for this course just needs to be able to create repos in your personal account.
-   10. Click authorize to allow the Github CLI to access your repository information.
-   11. You can close the Github window and go back to the Udacity workspace tab
+
+   ```bash
+   gh auth login
+   ```
+
+2. Select `Github.com`
+3. Select `HTTPS`
+4. Enter `Y` or just press **Enter** to authenticate with Github credentials
+5. Select **Login with a web browser**
+6. Highlight and copy the one-time code then press **Enter** to open the browser
+7. If VSCode pops-up with a warning, click **Open**
+8. Enter your Github credentials at the login page
+   1. You may need to perform your 2FA step next
+9. Paste in the one-time code that was given on the CLI prompt and click **Continue**
+   1. If you're prompted for authorizing access to any organizations, you don't have to do that. The `gh` cli for this course just needs to be able to create repos in your personal account.
+10. Click authorize to allow the Github CLI to access your repository information.
+11. You can close the Github window and go back to the Udacity workspace tab
 
 ### Configuration
+
 Next you'll need to configure git to use your desired email.
 
 If you already know what email you'd like to use, great! If you'd like to use the `noreply` email address that Github offers, follow [these instructions](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address#setting-your-commit-email-address-on-github)
 
 **Configure git with your email address**
+
 ```bash
 git config --global user.email "YOUR_EMAIL"
 ```
-   
+
 Now we'll finish up by initializing the repository and using the `gh` command to push the files to a new repository under you Github account. The last command uses `udacity-build-cicd-project` as the repository name, but you can change this to be whatever you'd like that doesn't conflict with an existing repo name in your account.
 
 **Initialize the workspace as a git repository**
+
 ```bash
 git init
 ```
-   
+
 **Stage the workspace files for committing**
+
 ```bash
 git add .
 ```
-   
+
 **Commit the workspace files**
+
 ```bash
 git commit -m "initial"
 ```
-   
+
 **Create your public repository and push the initial changes (it needs to be public to allow Github Actions to run for free)**
+
 ```bash
 gh repo create udacity-build-cicd-project --source=. --public --push
 ```
 
 As you work on the project, you won't need to create or initialize the repo again. You'll just need to make changes to your workflows in the `.github/workflows` folder, and perform `git add .` `git commit` and `git push` commands to make the files available in your repository and view your actions in the Github Actions interface.
-
 
 ## Setting up Continuous Deployment environment
 
@@ -127,12 +136,12 @@ First we need to prep the AWS account with the necessary infrastructure for depl
 1. Export your AWS credentials from the Cloud Gateway
 2. Use the commands below to run the Terraform and type `yes` after reviewing the expected changes
 
-```bash
-cd setup/terraform
-terraform apply
-```
+   ```bash
+   cd setup/terraform
+   terraform apply
+   ```
 
-4. Take note of the Terraform outputs. You'll need these later as you work on the project. You can always retrieve these values later with this command
+3. Take note of the Terraform outputs. You'll need these later as you work on the project. You can always retrieve these values later with this command
 
 ```bash
 cd setup/terraform
@@ -156,10 +165,10 @@ Now that the cluster and all AWS resources have been created, you'll need to add
 
 1. Run the `init.sh` helper script in the `setup` folder
 
-```bash
-cd setup
-./init.sh
-```
+   ```bash
+   cd setup
+   ./init.sh
+   ```
 
 2. The script will download a tool, add the IAM user ARN to the authentication configuration, indicate a `Done` status, then it'll remove the tool
 
@@ -169,13 +178,13 @@ We've provided the below list of dependencies to assist in the case you'd like t
 
 All of the tools below will be available in the workspace
 
-* [docker](https://docs.docker.com/desktop/install/debian/) - Used to build the frontend and backend applications
-* [kubectl](https://kubernetes.io/docs/tasks/tools/) - Used to apply the kubernetes manifests
-* [pipenv](https://pipenv.pypa.io/en/latest/install/#pragmatic-installation-of-pipenv) - Used for mananging Python version and dependencies
-* [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) - Used for managing NodeJS versions
-* [tfswitch](https://tfswitch.warrensbox.com/Install/) Used for managing Terraform versions
-* [kustomize](https://kubectl.docs.kubernetes.io/installation/kustomize/) Used for building the Kubernetes manifests dynamically in the CI environment
-* [jq](https://stedolan.github.io/jq/download/) for parsing JSON more easily on the command line
+- [docker](https://docs.docker.com/desktop/install/debian/) - Used to build the frontend and backend applications
+- [kubectl](https://kubernetes.io/docs/tasks/tools/) - Used to apply the kubernetes manifests
+- [pipenv](https://pipenv.pypa.io/en/latest/install/#pragmatic-installation-of-pipenv) - Used for mananging Python version and dependencies
+- [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) - Used for managing NodeJS versions
+- [tfswitch](https://tfswitch.warrensbox.com/Install/) Used for managing Terraform versions
+- [kustomize](https://kubectl.docs.kubernetes.io/installation/kustomize/) Used for building the Kubernetes manifests dynamically in the CI environment
+- [jq](https://stedolan.github.io/jq/download/) for parsing JSON more easily on the command line
 
 ## Frontend Development notes
 
