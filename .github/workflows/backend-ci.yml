@@ -1,4 +1,4 @@
-name: Backend CI
+name: Backend Continuous Integration
 
 on:
   workflow_dispatch:
@@ -38,7 +38,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: ${{env.PYTHON_VERSION}}
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - run: pip install pipenv
 
@@ -58,7 +58,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: ${{env.PYTHON_VERSION}}
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - run: pip install pipenv          
 
@@ -79,7 +79,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: ${{env.PYTHON_VERSION}}
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - run: pip install pipenv
 

@@ -25,13 +25,20 @@ jobs:
         working-directory: ./starter/frontend
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: starter/frontend/package-lock.json
 
-      - run: npm ci
+      - name: Cache Node.js dependencies
+        uses: actions/cache@v3
+        id: cache-node-modules
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('starter/frontend/package-lock.json') }}
+          restore-keys: |
+            npm-
+
+      - name: Install deps
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
+
       - run: npm run lint -- --fix
 
   test:
@@ -42,11 +49,6 @@ jobs:
         working-directory: ./starter/frontend
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: starter/frontend/package-lock.json
 
       - run: npm ci
 
