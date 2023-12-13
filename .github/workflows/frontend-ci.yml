@@ -24,7 +24,7 @@ jobs:
       run:
         working-directory: ./starter/frontend
     steps:
-      - name: Checkout code
+      - name: Check out repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -32,18 +32,15 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Cache Node.js dependencies
+      - name: Perform cache Node.js before install deps
         uses: actions/cache@v3
-        id: cache-node-modules
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('starter/frontend/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          key: npm-${{ hashFiles('starter/frontend/package-lock.json') }}
+          restore-keys: npm-
 
       - name: Install deps
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Run lint
         run: npm run lint -- --fix
@@ -55,25 +52,23 @@ jobs:
       run:
         working-directory: ./starter/frontend
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out repository
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Cache Node.js dependencies
+      - name: Perform cache Node.js before install deps
         uses: actions/cache@v3
-        id: cache-node-modules
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('starter/frontend/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          key: npm-${{ hashFiles('starter/frontend/package-lock.json') }}
+          restore-keys: npm-
 
       - name: Install deps
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - run: npm test
 
@@ -89,7 +84,20 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v4
 
-    - run: npm ci
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+
+    - name: Perform cache Node.js before install deps
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: npm-${{ hashFiles('starter/frontend/package-lock.json') }}
+        restore-keys: npm-
+
+    - name: Install deps
+      run: npm ci --ignore-scripts
 
     - run: echo "configure aws"
 
