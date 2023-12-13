@@ -1,4 +1,4 @@
-name: Frontend CI
+name: Frontend Continuous Integration
 
 on:
   workflow_dispatch:
@@ -24,18 +24,14 @@ jobs:
       run:
         working-directory: ./starter/frontend
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Cache Node.js dependencies
-        uses: actions/cache@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          path: ~/.npm
-          key: npm-${{ hashFiles('starter/frontend/package-lock.json') }}
-          restore-keys: |
-            npm-
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: starter/frontend/package-lock.json
 
       - run: npm ci
-
       - run: npm run lint -- --fix
 
   test:
@@ -45,7 +41,12 @@ jobs:
       run:
         working-directory: ./starter/frontend
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: starter/frontend/package-lock.json
 
       - run: npm ci
 
@@ -61,7 +62,13 @@ jobs:
 
     steps:
     - name: Check out repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
+
+    - uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: starter/frontend/package-lock.json
 
     - run: npm ci
 
