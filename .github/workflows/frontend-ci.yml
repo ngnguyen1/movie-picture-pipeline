@@ -97,9 +97,7 @@ jobs:
     - name: Install deps
       run: npm ci --ignore-scripts
 
-    - run: echo "configure aws"
-
-    - run: echo "login ecr"
-
-    - run: echo "push image to ecr"
+    - name: Build application with Docker
+      run: |
+        docker build --build-arg=REACT_APP_MOVIE_API_URL=http://localhost:5000 --tag=mp-frontend:latest .
 
