@@ -24,22 +24,29 @@ jobs:
       run:
         working-directory: ./starter/frontend
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: $NODE_VERSION
 
       - name: Cache Node.js dependencies
         uses: actions/cache@v3
         id: cache-node-modules
         with:
           path: ~/.npm
-          key: npm-${{ hashFiles('starter/frontend/package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('starter/frontend/package-lock.json') }}
           restore-keys: |
-            npm-
+            ${{ runner.os }}-node-
 
       - name: Install deps
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm i
+        run: npm ci
 
-      - run: npm run lint -- --fix
+      - name: Run lint
+        run: npm run lint -- --fix
 
   test:
     name: Testing
@@ -50,7 +57,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: npm ci
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: $NODE_VERSION
+
+      - name: Cache Node.js dependencies
+        uses: actions/cache@v3
+        id: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('starter/frontend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install deps
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
 
       - run: npm test
 
