@@ -10,9 +10,6 @@ on:
       - main
     paths:
       - "starter/frontend/**"
-  push:
-    branches:
-      - development
 
 env:
   REPOSITORY: frontend
