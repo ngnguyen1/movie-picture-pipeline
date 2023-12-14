@@ -1,0 +1,89 @@
+name: Frontend CD
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - development
+    paths:
+      - "starter/frontend/**"
+
+env:
+  REPOSITORY: frontend
+  IMAGE_TAG: latest
+
+jobs:
+  lint:
+    name: Linting
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./starter/frontend
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Perform cache Node.js before install deps
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('starter/frontend/package-lock.json') }}
+          restore-keys: npm-
+
+      - name: Install deps
+        run: npm ci --ignore-scripts
+
+      - name: Run lint
+        run: npm run lint -- --fix
+
+  test:
+    name: Testing
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./starter/frontend
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Perform cache Node.js before install deps
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('starter/frontend/package-lock.json') }}
+          restore-keys: npm-
+
+      - name: Install deps
+        run: npm ci --ignore-scripts
+
+      - run: npm test
+
+  build:
+    runs-on: ubuntu-latest
+    environment: Staging
+    needs: [lint, test]
+    defaults:
+      run:
+        working-directory: ./starter/frontend
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+    
+      - name: Configure AWS credentials
+        run: echo "running on region ${{ secrets.AWS_REGION }}"
+
+      - name: Login to Amazon ECR
+        run: echo "login to ecr"
+
+      - name: Build, tag, and push docker image to Amazon ECR
+        run: echo "build tag and push docker"
