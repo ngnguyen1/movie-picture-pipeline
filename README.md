@@ -26,14 +26,14 @@ You'll find 2 folders, one named `frontend` and one named `backend`, where each 
       - [x] Runs a test job that fails if the test suite doesn't pass
    - [x] Runs a build job only if the lint and test jobs pass and successfully builds the application
 2. A Continuous Deployment workflow that:
-   - [ ] Runs on `push` against the `main` branch, only when code in the frontend application changes.
-   - [ ] Is able to be run on-demand (i.e. manually without needing to push code)
-   - [ ] Runs the same lint/test jobs as the Continuous Integration workflow
-   - [ ] Runs a build job only when the lint and test jobs pass
-      - [ ] The built docker image should be tagged with the git sha
-   - [ ] Runs a deploy job that applies the Kubernetes manifests to the provided cluster.
-      - [ ] The manifest should deploy the newly created tagged image
-      - [ ] The tag applied to the image should be the git SHA of the commit that triggered the build
+   - [x] Runs on `push` against the `main` branch, only when code in the frontend application changes.
+   - [x] Is able to be run on-demand (i.e. manually without needing to push code)
+   - [x] Runs the same lint/test jobs as the Continuous Integration workflow
+   - [x] Runs a build job only when the lint and test jobs pass
+      - [x] The built docker image should be tagged with the git sha
+   - [x] Runs a deploy job that applies the Kubernetes manifests to the provided cluster.
+      - [x] The manifest should deploy the newly created tagged image
+      - [x] The tag applied to the image should be the git SHA of the commit that triggered the build
 
 ### Backend
 
@@ -45,14 +45,14 @@ You'll find 2 folders, one named `frontend` and one named `backend`, where each 
       - [x] Runs a test job that fails if the test suite doesn't pass
    - [x] Runs a build job only if the lint and test jobs pass and successfully builds the application
 2. A Continuous Deployment workflow that:
-   - [ ] Runs on `push` against the `main` branch, only when code in the frontend application changes.
-   - [ ] Is able to be run on-demand (i.e. manually without needing to push code)
-   - [ ] Runs the same lint/test jobs as the Continuous Integration workflow
-   - [ ] Runs a build job only when the lint and test jobs pass
-      - [ ] The built docker image should be tagged with the git sha
-   - [ ] Runs a deploy job that applies the Kubernetes manifests to the provided cluster.
-      - [ ] The manifest should deploy the newly created tagged image
-      - [ ] The tag applied to the image should be the git SHA of the commit that triggered the build
+   - [x] Runs on `push` against the `main` branch, only when code in the frontend application changes.
+   - [x] Is able to be run on-demand (i.e. manually without needing to push code)
+   - [x] Runs the same lint/test jobs as the Continuous Integration workflow
+   - [x] Runs a build job only when the lint and test jobs pass
+      - [x] The built docker image should be tagged with the git sha
+   - [x] Runs a deploy job that applies the Kubernetes manifests to the provided cluster.
+      - [x] The manifest should deploy the newly created tagged image
+      - [x] The tag applied to the image should be the git SHA of the commit that triggered the build
 
 **⚠️ NOTE**
 Once you begin work on Continuous Deployment, you'll need to first setup the AWS and Kubernetes environment. Follow [these instructions](#setting-up-continuous-deployment-environment) only when you're ready to start testing your deployments.
