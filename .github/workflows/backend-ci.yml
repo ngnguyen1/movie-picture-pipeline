@@ -1,4 +1,4 @@
-name: Backend CI
+name: Backend Continuous Integration
 
 on:
   workflow_dispatch:
@@ -10,16 +10,13 @@ on:
       - main
     paths:
       - "starter/backend/**"
-  push:
-    branches:
-      - development
 
 env:
   PYTHON_VERSION: 3.11
 
 jobs:
   lint:
-    name: Linting
+    name: Run lint
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -27,27 +24,19 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Cache pipenv dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pipenv
-          key: pipenv-${{ runner.os }}-${{ hashFiles('**/Pipfile.lock') }}
-          restore-keys: |
-            pipenv-${{ runner.os }}-
-
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: ${{env.PYTHON_VERSION}}
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - run: pip install pipenv
 
       - run: pipenv install
 
       - run: pipenv run lint
-        
+
   test:
-    name: Testing
+    name: Run test
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -58,9 +47,9 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: ${{env.PYTHON_VERSION}}
+          python-version: ${{ env.PYTHON_VERSION }}
 
-      - run: pip install pipenv          
+      - run: pip install pipenv
 
       - run: pipenv install
 
@@ -79,16 +68,12 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: ${{env.PYTHON_VERSION}}
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - run: pip install pipenv
 
       - run: pipenv install
 
-      - run: echo "configure aws"
-
-      - run: echo "login ecr"
-
-      - run: echo "push image to ecr"
-
-          
+      - name: Build Docker Image
+        run: |
+          docker build --tag mp-backend:latest .

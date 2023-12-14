@@ -1,4 +1,4 @@
-name: Frontend CI
+name: Frontend Continuous Integration
 
 on:
   workflow_dispatch:
@@ -10,9 +10,6 @@ on:
       - main
     paths:
       - "starter/frontend/**"
-  push:
-    branches:
-      - development
 env:
   NODE_VERSION: 18.x
 
@@ -24,19 +21,26 @@ jobs:
       run:
         working-directory: ./starter/frontend
     steps:
-      - uses: actions/checkout@v3
+      - name: Check out repository
+        uses: actions/checkout@v4
 
-      - name: Cache Node.js dependencies
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Perform cache Node.js before install deps
         uses: actions/cache@v3
         with:
           path: ~/.npm
           key: npm-${{ hashFiles('starter/frontend/package-lock.json') }}
-          restore-keys: |
-            npm-
+          restore-keys: npm-
 
-      - run: npm ci
+      - name: Install deps
+        run: npm ci --ignore-scripts
 
-      - run: npm run lint -- --fix
+      - name: Run lint
+        run: npm run lint -- --fix
 
   test:
     name: Testing
@@ -45,9 +49,23 @@ jobs:
       run:
         working-directory: ./starter/frontend
     steps:
-      - uses: actions/checkout@v3
+      - name: Check out repository
+        uses: actions/checkout@v4
 
-      - run: npm ci
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Perform cache Node.js before install deps
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('starter/frontend/package-lock.json') }}
+          restore-keys: npm-
+
+      - name: Install deps
+        run: npm ci --ignore-scripts
 
       - run: npm test
 
@@ -61,13 +79,24 @@ jobs:
 
     steps:
     - name: Check out repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
-    - run: npm ci
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
 
-    - run: echo "configure aws"
+    - name: Perform cache Node.js before install deps
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: npm-${{ hashFiles('starter/frontend/package-lock.json') }}
+        restore-keys: npm-
 
-    - run: echo "login ecr"
+    - name: Install deps
+      run: npm ci --ignore-scripts
 
-    - run: echo "push image to ecr"
+    - name: Build application with Docker
+      run: |
+        docker build --build-arg=REACT_APP_MOVIE_API_URL=http://localhost:5000 --tag=mp-frontend:latest .
 
