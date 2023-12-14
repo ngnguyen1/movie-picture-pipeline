@@ -1,84 +1,71 @@
-name: Frontend Continuous Deployment
+name: Backend Continuous Deployment
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - main
     paths:
-      - 'starter/frontend/**'
+      - 'starter/backend/**'
+  workflow_dispatch:
 
 env:
-  REPOSITORY: frontend
+  PYTHON_VERSION: 3.11
+  REPOSITORY: backend
   IMAGE_TAG: latest
 
 jobs:
   lint:
-    name: Linting
+    name: Run lint
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./starter/frontend
+        working-directory: ./starter/backend
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Perform cache Node.js before install deps
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: npm-${{ hashFiles('starter/frontend/package-lock.json') }}
-          restore-keys: npm-
+      - run: pip install pipenv
 
-      - name: Install deps
-        run: npm ci --ignore-scripts
+      - run: pipenv install
 
-      - name: Run lint
-        run: npm run lint -- --fix
+      - run: pipenv run lint
 
   test:
-    name: Testing
+    name: Run test
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./starter/frontend
+        working-directory: ./starter/backend
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Perform cache Node.js before install deps
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: npm-${{ hashFiles('starter/frontend/package-lock.json') }}
-          restore-keys: npm-
+      - run: pip install pipenv
 
-      - name: Install deps
-        run: npm ci --ignore-scripts
+      - run: pipenv install
 
-      - run: npm test
+      - run: pipenv run test
 
   build:
+    name: Build backend
     runs-on: ubuntu-latest
     environment: Staging
     needs: [lint, test]
     defaults:
       run:
-        working-directory: ./starter/frontend
+        working-directory: ./starter/backend
+
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-    
+      - uses: actions/checkout@v3
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -96,9 +83,7 @@ jobs:
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
-          aws eks update-kubeconfig --name cluster
-          export EXTERNALIP=$(kubectl get svc backend -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\n"}{.status.loadBalancer.ingress[0].ip}')
-          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG --build-arg=REACT_APP_MOVIE_API_URL=http://$EXTERNALIP .
+          docker build --tag=$REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
   deploy:
@@ -106,12 +91,12 @@ jobs:
     environment: Staging
     needs: build
     defaults:
-      run:
-        working-directory: ./starter/frontend
+        run:
+          working-directory: ./starter/backend
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      
+        
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -127,7 +112,7 @@ jobs:
 
       - name: Update kubeconfig
         run: aws eks update-kubeconfig --region us-east-1 --name cluster
-
+      
       - name: Kustomize set image
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
