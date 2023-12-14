@@ -10,7 +10,6 @@ on:
       - main
     paths:
       - "starter/frontend/**"
-
 env:
   NODE_VERSION: 18.x
 
